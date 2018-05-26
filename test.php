@@ -75,7 +75,7 @@ $postTableau['colorsCodes'] = $newListe;
  //Ecrire la nouvelle liste dans le fichier messages.json
  file_put_contents($file, $listePostsJson);
 
- /** ALIEN */
+ /** ALIEN******************************************************* */
 $pattern = [[0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1],
 [0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1],
 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0],
@@ -91,6 +91,7 @@ $type = "Alien";
 $largeur = 45;
 $hauteur = 40;
 $coordY = 100;
+$coordX = 0;
 $direction = 1;
 $vitesse = 0;
 $shot = 1; 
@@ -103,6 +104,7 @@ $nb = $largeur / 5;
  'largeur' => $largeur, 
  'hauteur' => $hauteur, 
  'coordY' => $coordY,
+ 'coordX' => $coordX,
  'direction' => $direction,
  'vitesse' => $vitesse,
  'shot' => $shot,
@@ -112,7 +114,6 @@ $nb = $largeur / 5;
 $listeNewListe = [];
 for($j = 0; $j<count($pattern); $j++){
   $newListe = [];
-  print_r(count($pattern[$j]));
   for($i = 0; $i<count($pattern[$j]); $i = $i + $nb){
     $u = 0;
     $provi = [];
@@ -130,6 +131,199 @@ for($j = 0; $j<count($pattern); $j++){
 
 //Colors
 $postTableau['colorsCodes'] = $colors;
+
+
+ //Integration au tableau en cours
+ array_push($listeMessages, $postTableau);
+
+ //Conversion au format JSON
+ $listePostsJson = json_encode($listeMessages, JSON_PRETTY_PRINT); //This parameter will format our JSON object and store it in json file
+ 
+ //Recup du fichier d'origine
+ $file = "./json/objects.json";
+ 
+ //Ecrire la nouvelle liste dans le fichier messages.json
+ file_put_contents($file, $listePostsJson);
+
+ /** SHOTALIEN ****************************************************************************************************/
+$pattern = [[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1]];
+$colors = 5;
+
+ //Recup des messages precedents
+ $json_source = file_get_contents('./json/objects.json');
+ $listeMessages = json_decode($json_source, true);
+
+$type = "ShotAlien";
+$largeur = 5;
+$hauteur = 10;
+$coordY = 0;
+$direction = 1;
+$vitesse = 5; 
+$lives = 1;
+
+ //Creation du post au format tableau
+ $postTableau = [
+  'type' => $type, 
+ 'largeur' => $largeur, 
+ 'hauteur' => $hauteur, 
+ 'coordY' => $coordY,
+ 'direction' => $direction,
+ 'vitesse' => $vitesse,
+ 'matrix' => $pattern,
+ 'colorsCodes' => $colors];
+
+ //Integration au tableau en cours
+ array_push($listeMessages, $postTableau);
+
+ //Conversion au format JSON
+ $listePostsJson = json_encode($listeMessages, JSON_PRETTY_PRINT); //This parameter will format our JSON object and store it in json file
+ 
+ //Recup du fichier d'origine
+ $file = "./json/objects.json";
+ 
+ //Ecrire la nouvelle liste dans le fichier messages.json
+ file_put_contents($file, $listePostsJson);
+
+ /** SHOTSHIP ****************************************************************************************************/
+$pattern = [[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1]];
+$colors = 11;
+
+ //Recup des messages precedents
+ $json_source = file_get_contents('./json/objects.json');
+ $listeMessages = json_decode($json_source, true);
+
+$type = "ShotShip";
+$largeur = 5;
+$hauteur = 10;
+$coordY = 0;
+$direction = -1;
+$vitesse = 20; 
+$lives = 1;
+
+ //Creation du post au format tableau
+ $postTableau = [
+  'type' => $type, 
+ 'largeur' => $largeur, 
+ 'hauteur' => $hauteur, 
+ 'coordY' => $coordY,
+ 'direction' => $direction,
+ 'vitesse' => $vitesse,
+ 'matrix' => $pattern,
+ 'colorsCodes' => $colors];
+
+ //Integration au tableau en cours
+ array_push($listeMessages, $postTableau);
+
+ //Conversion au format JSON
+ $listePostsJson = json_encode($listeMessages, JSON_PRETTY_PRINT); //This parameter will format our JSON object and store it in json file
+ 
+ //Recup du fichier d'origine
+ $file = "./json/objects.json";
+ 
+ //Ecrire la nouvelle liste dans le fichier messages.json
+ file_put_contents($file, $listePostsJson);
+
+ /** HEART ****************************************************************************************************/
+$pattern = [[0, 1, 1, 0, 1, 1, 0],[1, 1, 1, 1, 1, 1, 1],[1, 1, 1, 1, 1, 1, 1],[0, 1, 1, 1, 1, 1, 0],[0, 0, 1, 1, 1, 0, 0],[0, 0, 0, 1, 0, 0, 0]];
+$colors = 5;
+
+ //Recup des messages precedents
+ $json_source = file_get_contents('./json/objects.json');
+ $listeMessages = json_decode($json_source, true);
+
+$type = "Heart";
+$largeur = 35;
+$hauteur = 30;
+$coordX = 20;
+$coordY = 20;
+$lives = 1;
+
+ //Creation du post au format tableau
+ $postTableau = [
+  'type' => $type, 
+ 'largeur' => $largeur, 
+ 'hauteur' => $hauteur, 
+ 'coordY' => $coordY,
+ 'coordX' => $coordX,
+ 'matrix' => $pattern,
+ 'colorsCodes' => $colors];
+
+ //Integration au tableau en cours
+ array_push($listeMessages, $postTableau);
+
+ //Conversion au format JSON
+ $listePostsJson = json_encode($listeMessages, JSON_PRETTY_PRINT); //This parameter will format our JSON object and store it in json file
+ 
+ //Recup du fichier d'origine
+ $file = "./json/objects.json";
+ 
+ //Ecrire la nouvelle liste dans le fichier messages.json
+ file_put_contents($file, $listePostsJson);
+
+ /** BigBoss ****************************************************************************************************/
+$pattern = [0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0];
+$colors = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+
+ //Recup des messages precedents
+ $json_source = file_get_contents('./json/objects.json');
+ $listeMessages = json_decode($json_source, true);
+
+$type = "BigBoss";
+$largeur = 65;
+$hauteur = 75;
+$coordX = 665;
+$coordY = 200;
+$direction = 0;
+$vitesse = 1;
+$shot = 0; 
+$lives = 5;
+
+$nb = $largeur / 5;
+ //Creation du post au format tableau
+ $postTableau = [
+  'type' => $type, 
+ 'largeur' => $largeur, 
+ 'hauteur' => $hauteur, 
+ 'coordY' => $coordY,
+ 'coordX' => $coordX,
+ 'direction' => $direction,
+ 'vitesse' => $vitesse,
+ 'shot' => $shot,
+ 'lives' => $lives];
+
+//Pattern
+ $newListe = [];
+ for($i = 0; $i<count($pattern); $i = $i + $nb){
+   $u = 0;
+   $provi = [];
+   while($u < $nb){
+     array_push($provi,$pattern[$i + $u]);
+     $u++;
+   }
+   array_push($newListe,$provi);
+ }
+
+ $postTableau['matrix'] = $newListe;
+
+//Colors
+$newListe = [];
+$compteur = 0;
+for($i = 0; $i<count($pattern); $i = $i + $nb){
+  $u = 0;
+  $provi = [];
+  while($u < $nb){
+      if($pattern[$i + $u] === 1){
+        array_push($provi,$colors[$compteur]);
+        $compteur++;
+      }else{
+        array_push($provi,0);
+      }
+    $u++;
+  }
+  array_push($newListe,$provi);
+}
+
+$postTableau['colorsCodes'] = $newListe;
 
 
  //Integration au tableau en cours
