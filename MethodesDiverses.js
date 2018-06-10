@@ -1,138 +1,130 @@
-////Actions specifiques du clavier
+//COLORME
 
-void keyPressed() {
+function ColorMe(code) {
 
-  if (level == 0) {  //Declencher un niveau sur ecran d'intro
-    if (key == '1') {
-      level = 1;
-    } else if (key == '2') {
-      level = 2;
-    } else if (key == '3') {
-      level = 3;
-    } else if (key == '4') {
-      level = 4;
-    }
-    intro.pause();
-    intro.rewind();
-    loop();
-  }
-  if (pause && (key == 'n' || key == 'N')) { //Ecran intermediaire entre chaque level
-    changeLevel = true;
-    pause = false;
-    loop();
-  }
-  if (starShip.lives == 0 || level == 5) {  //GameOver
-    if (key == 'q' || key == 'Q') {
-      exit();
-    }
-    if (key == 's' || key == 'S') {
-      outro.pause();
-      outro.rewind();
-      level = 0;
-      changeLevel = true;
-      playerScore = 0;
-      loop();
-    }
-  }
-}
-
-//Methode showMustGoOn d'affichage des elements
-
-void showMustGoOn() {
-  for (Objet testElement : screenElements) {
-    if (testElement.lives > 0) {
-      testElement.show();
-    }
-  }
-}
-
-
-//Methode de probabilite
-
-public boolean loto (float value) {
-  boolean resultat = false;
-  if (value > random(0, 100.1)) resultat = true;
-  return resultat;
-}
-
-
-//Methode pour ecrire un texte en rouge, centre a l'ecran. Parametres: le texte, la police et la coordonnee en Y
-
-void textMe(String texte, PFont font, int coordY) {
-  textAlign(CENTER);
-  textFont(font);
-  fill(255, 0, 0);
-  text(texte, 700, coordY);
-}
-
-//Methode qui renvoi le code RGB en fonction du code couleur indique en parametre
-
-public ArrayList<Float> colorMe(int code) {
-  ArrayList<Float> codeRGB = new ArrayList<Float>();
+  var codeRGB = [];
 
   switch (code) {
 
   case 1:  //Black
     //Red
-    codeRGB.add (0.0);
+    codeRGB.push(0);
     //Green
-    codeRGB.add (0.0);
+    codeRGB.push(0);
     //Blue
-    codeRGB.add (0.0);
+    codeRGB.push(0);
     break;
   case 2:  //Gray
-    codeRGB.add (111.0);
-    codeRGB.add (102.0);
-    codeRGB.add (102.0);
+    codeRGB.push(111);
+    codeRGB.push(102);
+    codeRGB.push(102);
     break;
   case 3:  //Blue
-    codeRGB.add (77.0);
-    codeRGB.add (93.0);
-    codeRGB.add (178.0);
+    codeRGB.push(77);
+    codeRGB.push(93);
+    codeRGB.push(178);
     break;
   case 4:  //White
-    codeRGB.add (255.0);
-    codeRGB.add (255.0);
-    codeRGB.add (255.0);
+    codeRGB.push(255);
+    codeRGB.push(255);
+    codeRGB.push(255);
     break;
   case 5:  //Red
-    codeRGB.add (255.0);
-    codeRGB.add (0.0);
-    codeRGB.add (0.0);
+    codeRGB.push(255);
+    codeRGB.push(0);
+    codeRGB.push(0);
     break;
   case 6:  //Dark orange
-    codeRGB.add (245.0);
-    codeRGB.add (130.0);
-    codeRGB.add (7.0);
+    codeRGB.push(245);
+    codeRGB.push(130);
+    codeRGB.push(7);
     break;
   case 7:  //Soft orange
-    codeRGB.add (250.0);
-    codeRGB.add (184.0);
-    codeRGB.add (114.0);
+    codeRGB.push(250);
+    codeRGB.push(184);
+    codeRGB.push(114);
     break;
   case 8:  //Yellow
-    codeRGB.add (249.0);
-    codeRGB.add (250.0);
-    codeRGB.add (114.0);
+    codeRGB.push(249);
+    codeRGB.push(250);
+    codeRGB.push(114);
     break;
   case 9:  //Turquoise
-    codeRGB.add (35.0);
-    codeRGB.add (206.0);
-    codeRGB.add (247.0);
+    codeRGB.push(35);
+    codeRGB.push(206);
+    codeRGB.push(247);
     break;
   case 10:  //Pink
-    codeRGB.add (250.0);
-    codeRGB.add (116.0);
-    codeRGB.add (206.0);
+    codeRGB.push(250);
+    codeRGB.push(116);
+    codeRGB.push(206);
     break;
   case 11:  //Green
-    codeRGB.add (54.0);
-    codeRGB.add (232.0);
-    codeRGB.add (85.0);
+    codeRGB.push(54);
+    codeRGB.push(232);
+    codeRGB.push(85);
     break; 
   default:
     break;
   }
 
   return codeRGB;
+}
+
+function textMe(texte, font, size, coordY) {
+  textAlign(CENTER);
+  textSize(size);
+  textFont(font);
+  fill(255, 0, 0);
+  text(texte, 700, parseInt(coordY));
+}
+
+function textIntro() {
+
+  textMe("Projet UE NFA031  -  Cantinelli Thomas", fontSmall, 20, 25);
+
+  textMe("Star Wars Invaders", fontBig, 60, 140);
+        
+  var levels = "Press key to start\n\n";
+
+  for (i = 1; i < 4; i++) {
+      levels += "key " + i + " ........... Level " + i +"\n";
+  }
+
+  levels += "key 4 ......... Big Boss";
+
+  textMe(levels, fontMedium, 30, 500);
+  textMe("To move: Mouse Left/Right  To shoot: Left Button", fontMedium, 30, 750);
+}
+
+function keyPressed() {
+
+  if(level === 0){
+
+    changeLevel = true;
+
+    switch (keyCode){
+
+      case 49:  //1
+        level = 1;
+        break;
+      case 50:  //2
+        level = 2;
+        break;
+      case 51:  //3
+        level = 3;
+        break;
+      case 52:  //4
+        level = 4;
+        break;
+      default:
+        break;
+    }
+  }
+
+  if(keyCode === 81){  //q
+    changeLevel = true;
+    level = 0;
+  }
+  
 }

@@ -11,6 +11,7 @@ $type = "Ship";
 $largeur = 65;
 $hauteur = 35;
 $coordY = 700;
+$coordX = 0;
 $direction = 0;
 $vitesse = 0;
 $shot = 1; 
@@ -23,6 +24,7 @@ $nb = $largeur / 5;
  'largeur' => $largeur, 
  'hauteur' => $hauteur, 
  'coordY' => $coordY,
+ 'coordX' => $coordY,
  'direction' => $direction,
  'vitesse' => $vitesse,
  'shot' => $shot,
@@ -104,7 +106,7 @@ $nb = $largeur / 5;
  'largeur' => $largeur, 
  'hauteur' => $hauteur, 
  'coordY' => $coordY,
- 'coordX' => $coordX,
+ 'coordX' => $coordY,
  'direction' => $direction,
  'vitesse' => $vitesse,
  'shot' => $shot,
@@ -157,8 +159,10 @@ $type = "ShotAlien";
 $largeur = 5;
 $hauteur = 10;
 $coordY = 0;
+$coordX = 0;
 $direction = 1;
-$vitesse = 5; 
+$vitesse = 5;
+$shot = 0; 
 $lives = 1;
 
  //Creation du post au format tableau
@@ -167,10 +171,14 @@ $lives = 1;
  'largeur' => $largeur, 
  'hauteur' => $hauteur, 
  'coordY' => $coordY,
+ 'coordX' => $coordY,
  'direction' => $direction,
  'vitesse' => $vitesse,
- 'matrix' => $pattern,
- 'colorsCodes' => $colors];
+ 'shot' => $shot,
+ 'lives' => $lives,
+  'matrix' => $pattern,
+  'colorsCodes' => $colors
+ ];
 
  //Integration au tableau en cours
  array_push($listeMessages, $postTableau);
@@ -199,6 +207,9 @@ $coordY = 0;
 $direction = -1;
 $vitesse = 20; 
 $lives = 1;
+$coordX = 0;
+$shot = 0; 
+
 
  //Creation du post au format tableau
  $postTableau = [
@@ -206,11 +217,14 @@ $lives = 1;
  'largeur' => $largeur, 
  'hauteur' => $hauteur, 
  'coordY' => $coordY,
+ 'coordX' => $coordY,
  'direction' => $direction,
  'vitesse' => $vitesse,
+ 'shot' => $shot,
+ 'lives' => $lives,
  'matrix' => $pattern,
- 'colorsCodes' => $colors];
-
+ 'colorsCodes' => $colors
+];
  //Integration au tableau en cours
  array_push($listeMessages, $postTableau);
 
@@ -234,8 +248,11 @@ $colors = 5;
 $type = "Heart";
 $largeur = 35;
 $hauteur = 30;
-$coordX = 20;
 $coordY = 20;
+$coordX = 20;
+$direction = 0;
+$vitesse = 0;
+$shot = 0; 
 $lives = 1;
 
  //Creation du post au format tableau
@@ -244,9 +261,14 @@ $lives = 1;
  'largeur' => $largeur, 
  'hauteur' => $hauteur, 
  'coordY' => $coordY,
- 'coordX' => $coordX,
+ 'coordX' => $coordY,
+ 'direction' => $direction,
+ 'vitesse' => $vitesse,
+ 'shot' => $shot,
+ 'lives' => $lives,
  'matrix' => $pattern,
- 'colorsCodes' => $colors];
+ 'colorsCodes' => $colors
+];
 
  //Integration au tableau en cours
  array_push($listeMessages, $postTableau);
@@ -285,7 +307,7 @@ $nb = $largeur / 5;
  'largeur' => $largeur, 
  'hauteur' => $hauteur, 
  'coordY' => $coordY,
- 'coordX' => $coordX,
+ 'coordX' => $coordY,
  'direction' => $direction,
  'vitesse' => $vitesse,
  'shot' => $shot,

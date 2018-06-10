@@ -19,232 +19,129 @@ Cette class Objet permet de creer un element affiche a l'ecran: Elle sera la bas
  - Une variable qui informe s'ils sont autorises a tirer (ils ne peuvent produire qu'un tir a la fois)
  */
 
-var Objet = {
+function Objet(type){
 
-  ////PARAMETRES
+    ////PARAMETRES
+  this.type = type;
 
-  type: "",  //Alien, Ship, Shot ou Boss
-  largeur: 0,  //largeur du rectangle
-  hauteur: 0,  //hauteur du rectangle
-  coordX: 0, //coordonnee X de son coin superieur gauche
-  coordY: 0,  //coordonnee Y de son coin superieur gauche
-  lives: 0,  //Nombre de vies
+  var listeColors;
+  var listeMatrix;
 
-  matrix: [],  //matrice d'etat des pixels
+  for(i = 0 ; i < listeObjets.length ; i++){
 
-  colorsCodes: [], //liste des codes couleurs
+    if(listeObjets[i].type === this.type){
+      this.largeur = listeObjets[i].largeur;
+      this.hauteur = listeObjets[i].hauteur;
+      this.coordY = listeObjets[i].coordY;
+      this.coordX = listeObjets[i].coordX;
+      this.lives = listeObjets[i].lives;
+      this.direction = listeObjets[i].direction;
+      this.vitesse = listeObjets[i].vitesse;
+      this.shot = listeObjets[i].shot;
 
-  direction: 0,  //Direction en Y
-  vitesse: 0,  //vitesse de propagation
+      if(this.type === "Alien"){
+        listeMatrix = listeObjets[i].matrix;
+      }else{
+        this.matrix = listeObjets[i].matrix;
+      }
+      
+      listeColors = listeObjets[i].colorsCodes;
 
-  shot: 0,  //Autorisation de tirer ou non
+      break;
+    }
+  }
 
-  ////METHODES
+  //Creation de matrix pour alien et colorsCodes pour tous
 
-  create: function () { //Methode de creation d'un objet en fonction de son type
+  switch (this.type) {
 
-    var pattern = [];  //Pattern des carres de 5 pixels
+    case "Alien":
 
-    //Definition des parametres selon le type d'objet
+      //Tirage du type
+     this.matrix = listeMatrix[Math.floor(Math.random()*listeMatrix.length)];
+    
+      //Tirage de la couleur
+      var colorChoose = listeColors[Math.floor(Math.random()*listeColors.length)];
 
-    switch (this.type) {
+      var newListe = [];
 
-      case "Ship":
+      for(i = 0 ; i < this.matrix.length ; i++){
 
-        this.largeur = 65;
-        this.hauteur = 35;
-        this.coordY = 700;  //Le vaisseau se dirige sur un axe horizontal a 100 pixels du bas de la fenetre (y = 700), position du haut du vaisseau
-        this.direction = 0;
-        this.vitesse = 0;  //Pas de vitesse specifique pour le vaisseau
-        this.shot = 1;  //Pour le vaisseau, l'autorisation de tirer est binaire: 0 = non autorise, 1 = autorise
-        this.ives = 5;
+        var newLine = [];
 
-        int shipPattern[] = {0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1};
-
-        for (int carre : shipPattern) {
-          pattern.add(carre);
+        for(j = 0 ; j < this.matrix[i].length ; j++){
+          newLine.push(colorChoose);
         }
 
-        int listColors[] = {1, 2, 2, 2, 3, 2, 2, 2, 4, 2, 2, 2, 3, 3, 3, 2, 2, 4, 4, 4, 2, 2, 3, 3, 3, 3, 3, 2, 2, 4, 4, 4, 1, 2, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 3, 3, 3, 5, 6, 7, 8, 7, 6, 5, 3};
-        for (int couleur : listColors) {
-          colorsCodes.add(couleur);
-        }
-        break;
+        newListe.push(newLine);
+      }
 
-      case "Alien":
+      this.colorsCodes = newListe;
 
-        //Il existe 4 modeles differents d'alien, chacun avec sa propre couleur
-
-        int modele = int(random(1, 5));  //Choix du modele, nombre aleatoire entre 1 et 4
-
-        largeur = 45;
-        hauteur = 40;
-        // coordX sera mis à jour a chaque level
-        coordY = 100;
-        direction = 1;  //Se deplace vers le bas de la fenetre
-        //vitesse definie a chaque level
-        //shot: Pour un alien, l'autorisation de tirer se fait au moyen d'un compteur qui decroit a chaque frame. La valeur de depart est fixee au debut du level
-        lives = 1;
-
-        //Pattern des carres de 5 pixels et couleur, 4 modèles:
-
-        int[] modele1 = {0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1};
-        int[] modele2 = {0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1};
-        int[] modele3 = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0};
-        int[] modele4 = {0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1};
-
-        int[] modeleAlien;
-
-        //En fonction du numero de modele, definition du pattern de carre et leur couleur
-
-        switch (modele) {
-
-        case 1:
-          modeleAlien = modele1;
-          colorsCodes.add(8);
-          break;
-
-        case 2:
-          modeleAlien = modele2;
-          colorsCodes.add(9);
-          break;
-
-        case 3:
-          modeleAlien = modele3;
-          colorsCodes.add(10);
-          break;
-
-        default:
-          modeleAlien = modele4;
-          colorsCodes.add(5);
-          break;
-        }
-
-        for (int carre : modeleAlien) {
-          pattern.add(carre);
-        }
-        break;
-
+      break;
+    
       case "ShotAlien":
       case "ShotShip":
 
-        //Definition des parametres communs aux 2 types de tir
+        var newListe = [];
 
-        largeur = 5;
-        hauteur = 10;
-        //coordX sera mis a jour a chaque debut de tir
-        //coordY sera mis a jour a chaque frame
-        //shot: Pas defini ici
-        lives = 1;
+        for(i = 0 ; i < this.matrix.length ; i++){
 
-        //Le tir etant represente par un rectangle plein, divise en 10 carres tous colores donc egaux a 1
+          var newLine = [];
 
-        for (int i = 0; i < 10; i++) {
-          pattern.add(1);
+          for(j = 0 ; j < this.matrix[i].length ; j++){
+            newLine.push(listeColors);
+          }
+
+          newListe.push(newLine);
         }
 
-        //Definition des parametres specifiques
+        this.colorsCodes = newListe;
 
-        if (typeCreation == "ShotAlien") {
-          direction = 1;
-          vitesse = 5;
-          colorsCodes.add(5);
-        } else {  //ShotShip
-          direction = -1;
-          vitesse = 20;
-          colorsCodes.add(11);
-        }
         break;
 
-      case "Heart":
+    case "Heart":
+      var newListe = [];
 
-        largeur = 35;
-        hauteur = 30;
-        coordX = 20; 
-        coordY = 20; 
-        //dir Non renseigne
-        //shot Non renseigne
-        vitesse = 0;
-        lives = 1;
+      for(i = 0 ; i < this.matrix.length ; i++){
 
-        int[] heartPattern = {0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0};
+        var newLine = [];
 
-        for (int carre : heartPattern) {
-          pattern.add(carre);
-        }
-
-        colorsCodes.add(5);  //Couleur rouge
-        break;
-
-      case "BigBoss":
-
-        largeur = 65;
-        hauteur = 75;
-        coordX  = 665;
-        coordY  = 200;
-        //direction est variable
-        vitesse = 1;
-        //shot idem Alien, compteur
-        lives = 5;
-
-        int bossPattern[] = {0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0};
-
-        for (int carre : bossPattern) {
-          pattern.add(carre);
-        }
-
-        int bossColors[] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
-
-        for (int couleur : bossColors) {
-          colorsCodes.add(couleur);
-        }
-        break;
-
-      default:
-        break;
-    }
-
-    //Pour tous les types, remplissage de la matrice d'etat des pixels
-
-    int indice = 0; //Indice du pattern
-
-    matrix = new int[hauteur][largeur];
-
-    for (int i = 0; i < hauteur; i += 5) {  // Tous les 5 pixels en Y
-      for (int j = 0; j < largeur; j += 5) {  //Tous les 5 pixels en X
-
-        int value = pattern.get(indice);
-
-        for (int y = 0; y < 5; y++) {  //La valeur 1 ou 0 est attribuee aux 25 pixels du carre
-          for (int z = 0; z < 5; z++) {
-
-            matrix[i + y][j + z] = value;
+        for(j = 0 ; j < this.matrix[i].length ; j++){
+          if(this.matrix[i][j] === 0){
+            newLine.push(0);
+          }else{
+            newLine.push(listeColors);
           }
         }
-
-        indice++;
+        newListe.push(newLine);
       }
-    }
+      this.colorsCodes = newListe;
+      break;
+      
+    default:
+      this.colorsCodes = listeColors;
+      break;
+
   }
-};
 
-  void show() {  //Methode generique d'affichage de l'element
+  this.showObject = function() {
 
-    int indexColor = 0;  //Index de l'ArrayList des codes couleur
+    for (i = 0; i < this.matrix.length; i++) {  // Tous les 5 pixels en Y
+      for (j = 0; j < this.matrix[i].length; j++) {  //Tous les 5 pixels en X
 
-    for (int i = 0; i < int(hauteur); i += 5) {  // Tous les 5 pixels en Y
-      for (int j = 0; j < int(largeur); j += 5) {  //Tous les 5 pixels en X
-
-        if (matrix[i][j] == 1) { //pixel colore donc carre dessine
+        if (this.matrix[i][j] === 1) { //pixel colore donc carre dessine
 
           //Calcul des positions x,y du coin gauche superieur du carre
-          float x = coordX + j;
-          float y = coordY + i;
+          var x = this.coordX + j*5;
+          var y = this.coordY + i*5;
 
           //recuperation de la couleur du carre par la methode colorMe
-          float r = colorMe(colorsCodes.get(indexColor)).get(0);
-          float g = colorMe(colorsCodes.get(indexColor)).get(1);
-          float b = colorMe(colorsCodes.get(indexColor)).get(2);
+
+          var listeCouleurs = ColorMe(this.colorsCodes[i][j]);
+          var r = listeCouleurs[0];
+          var g = listeCouleurs[1];
+          var b = listeCouleurs[2];
 
           //Affichage du carre
           strokeWeight(1);
@@ -252,12 +149,1318 @@ var Objet = {
           fill(r, g, b);
           rect(x, y, 5, 5);
 
-          //Mise a jour de l'indexColor
-          if ((colorsCodes.size() != 1) && (indexColor <  colorsCodes.size())) {
-            indexColor++;
-          }
         }
       }
     }
   }
+
 }
+
+
+listeObjets = [
+  {
+      "type": "Ship",
+      "largeur": 65,
+      "hauteur": 35,
+      "coordY": 700,
+      "coordX": 700,
+      "direction": 0,
+      "vitesse": 0,
+      "shot": 1,
+      "lives": 5,
+      "matrix": [
+          [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+          ],
+          [
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+          ],
+          [
+              0,
+              0,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              0,
+              0
+          ],
+          [
+              0,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              0
+          ],
+          [
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1
+          ],
+          [
+              1,
+              1,
+              0,
+              0,
+              1,
+              1,
+              1,
+              1,
+              1,
+              0,
+              0,
+              1,
+              1
+          ],
+          [
+              1,
+              0,
+              0,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              0,
+              0,
+              1
+          ]
+      ],
+      "colorsCodes": [
+          [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+          ],
+          [
+              0,
+              0,
+              0,
+              0,
+              0,
+              2,
+              2,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0
+          ],
+          [
+              0,
+              0,
+              3,
+              2,
+              2,
+              2,
+              4,
+              2,
+              2,
+              2,
+              3,
+              0,
+              0
+          ],
+          [
+              0,
+              3,
+              3,
+              2,
+              2,
+              4,
+              4,
+              4,
+              2,
+              2,
+              3,
+              3,
+              0
+          ],
+          [
+              3,
+              3,
+              3,
+              2,
+              2,
+              4,
+              4,
+              4,
+              1,
+              2,
+              3,
+              3,
+              3
+          ],
+          [
+              3,
+              3,
+              0,
+              0,
+              2,
+              2,
+              2,
+              2,
+              2,
+              0,
+              0,
+              3,
+              3
+          ],
+          [
+              3,
+              0,
+              0,
+              5,
+              6,
+              7,
+              8,
+              7,
+              6,
+              5,
+              0,
+              0,
+              3
+          ]
+      ]
+  },
+  {
+      "type": "Alien",
+      "largeur": 45,
+      "hauteur": 40,
+      "coordY": 100,
+      "coordX": 100,
+      "direction": 1,
+      "vitesse": 0,
+      "shot": 1,
+      "lives": 1,
+      "matrix": [
+          [
+              [
+                  0,
+                  0,
+                  0,
+                  1,
+                  1,
+                  1,
+                  0,
+                  0,
+                  0
+              ],
+              [
+                  0,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  0
+              ],
+              [
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1
+              ],
+              [
+                  1,
+                  0,
+                  0,
+                  1,
+                  1,
+                  1,
+                  0,
+                  0,
+                  1
+              ],
+              [
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1
+              ],
+              [
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+              ],
+              [
+                  0,
+                  1,
+                  0,
+                  1,
+                  1,
+                  1,
+                  0,
+                  1,
+                  0
+              ],
+              [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+              ]
+          ],
+          [
+              [
+                  0,
+                  0,
+                  0,
+                  1,
+                  1,
+                  1,
+                  0,
+                  0,
+                  0
+              ],
+              [
+                  0,
+                  0,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  0,
+                  0
+              ],
+              [
+                  0,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  0
+              ],
+              [
+                  1,
+                  1,
+                  0,
+                  1,
+                  1,
+                  1,
+                  0,
+                  1,
+                  1
+              ],
+              [
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1
+              ],
+              [
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+              ],
+              [
+                  0,
+                  1,
+                  0,
+                  1,
+                  1,
+                  1,
+                  0,
+                  1,
+                  0
+              ],
+              [
+                  1,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  1
+              ]
+          ],
+          [
+              [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+              ],
+              [
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+              ],
+              [
+                  1,
+                  0,
+                  0,
+                  1,
+                  1,
+                  1,
+                  0,
+                  0,
+                  1
+              ],
+              [
+                  1,
+                  0,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  0,
+                  1
+              ],
+              [
+                  1,
+                  1,
+                  1,
+                  0,
+                  1,
+                  0,
+                  1,
+                  1,
+                  1
+              ],
+              [
+                  0,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  0
+              ],
+              [
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+              ],
+              [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0
+              ]
+          ],
+          [
+              [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0
+              ],
+              [
+                  0,
+                  0,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  0,
+                  0
+              ],
+              [
+                  0,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  0
+              ],
+              [
+                  0,
+                  1,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  1,
+                  0
+              ],
+              [
+                  0,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  0
+              ],
+              [
+                  0,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  0
+              ],
+              [
+                  1,
+                  0,
+                  1,
+                  0,
+                  1,
+                  0,
+                  1,
+                  0,
+                  1
+              ],
+              [
+                  1,
+                  0,
+                  1,
+                  0,
+                  1,
+                  0,
+                  1,
+                  0,
+                  1
+              ]
+          ]
+      ],
+      "colorsCodes": [
+          8,
+          9,
+          10,
+          5
+      ]
+  },
+  {
+      "type": "ShotAlien",
+      "largeur": 5,
+      "hauteur": 10,
+      "coordY": 0,
+      "coordX": 0,
+      "direction": 1,
+      "vitesse": 5,
+      "shot": 0,
+      "lives": 1,
+      "matrix": [
+          [
+              1,
+              1,
+              1,
+              1,
+              1
+          ],
+          [
+              1,
+              1,
+              1,
+              1,
+              1
+          ],
+          [
+              1,
+              1,
+              1,
+              1,
+              1
+          ],
+          [
+              1,
+              1,
+              1,
+              1,
+              1
+          ],
+          [
+              1,
+              1,
+              1,
+              1,
+              1
+          ],
+          [
+              1,
+              1,
+              1,
+              1,
+              1
+          ],
+          [
+              1,
+              1,
+              1,
+              1,
+              1
+          ],
+          [
+              1,
+              1,
+              1,
+              1,
+              1
+          ],
+          [
+              1,
+              1,
+              1,
+              1,
+              1
+          ],
+          [
+              1,
+              1,
+              1,
+              1,
+              1
+          ]
+      ],
+      "colorsCodes": 5
+  },
+  {
+      "type": "ShotShip",
+      "largeur": 5,
+      "hauteur": 10,
+      "coordY": 0,
+      "coordX": 0,
+      "direction": -1,
+      "vitesse": 20,
+      "shot": 0,
+      "lives": 1,
+      "matrix": [
+          [
+              1,
+              1,
+              1,
+              1,
+              1
+          ],
+          [
+              1,
+              1,
+              1,
+              1,
+              1
+          ],
+          [
+              1,
+              1,
+              1,
+              1,
+              1
+          ],
+          [
+              1,
+              1,
+              1,
+              1,
+              1
+          ],
+          [
+              1,
+              1,
+              1,
+              1,
+              1
+          ],
+          [
+              1,
+              1,
+              1,
+              1,
+              1
+          ],
+          [
+              1,
+              1,
+              1,
+              1,
+              1
+          ],
+          [
+              1,
+              1,
+              1,
+              1,
+              1
+          ],
+          [
+              1,
+              1,
+              1,
+              1,
+              1
+          ],
+          [
+              1,
+              1,
+              1,
+              1,
+              1
+          ]
+      ],
+      "colorsCodes": 11
+  },
+  {
+      "type": "Heart",
+      "largeur": 35,
+      "hauteur": 30,
+      "coordY": 20,
+      "coordX": 20,
+      "direction": 0,
+      "vitesse": 0,
+      "shot": 0,
+      "lives": 1,
+      "matrix": [
+          [
+              0,
+              1,
+              1,
+              0,
+              1,
+              1,
+              0
+          ],
+          [
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1
+          ],
+          [
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1
+          ],
+          [
+              0,
+              1,
+              1,
+              1,
+              1,
+              1,
+              0
+          ],
+          [
+              0,
+              0,
+              1,
+              1,
+              1,
+              0,
+              0
+          ],
+          [
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0
+          ]
+      ],
+      "colorsCodes": 5
+  },
+  {
+      "type": "BigBoss",
+      "largeur": 65,
+      "hauteur": 75,
+      "coordY": 200,
+      "coordX": 200,
+      "direction": 0,
+      "vitesse": 1,
+      "shot": 0,
+      "lives": 5,
+      "matrix": [
+          [
+              0,
+              0,
+              0,
+              0,
+              1,
+              1,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0
+          ],
+          [
+              0,
+              0,
+              0,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0
+          ],
+          [
+              0,
+              0,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              0,
+              0
+          ],
+          [
+              0,
+              0,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              0,
+              0
+          ],
+          [
+              0,
+              0,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              0,
+              0
+          ],
+          [
+              0,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              0
+          ],
+          [
+              0,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              0
+          ],
+          [
+              0,
+              1,
+              1,
+              0,
+              0,
+              1,
+              1,
+              1,
+              0,
+              0,
+              1,
+              1,
+              0
+          ],
+          [
+              0,
+              1,
+              1,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              1,
+              1,
+              0
+          ],
+          [
+              1,
+              1,
+              1,
+              1,
+              0,
+              1,
+              1,
+              1,
+              0,
+              1,
+              1,
+              1,
+              1
+          ],
+          [
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1
+          ],
+          [
+              1,
+              1,
+              1,
+              0,
+              1,
+              0,
+              1,
+              0,
+              1,
+              0,
+              1,
+              1,
+              1
+          ],
+          [
+              0,
+              0,
+              0,
+              1,
+              1,
+              0,
+              1,
+              0,
+              1,
+              1,
+              0,
+              0,
+              0
+          ],
+          [
+              0,
+              0,
+              0,
+              0,
+              1,
+              1,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0
+          ],
+          [
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+          ]
+      ],
+      "colorsCodes": [
+          [
+              0,
+              0,
+              0,
+              0,
+              1,
+              1,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0
+          ],
+          [
+              0,
+              0,
+              0,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0
+          ],
+          [
+              0,
+              0,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              0,
+              0
+          ],
+          [
+              0,
+              0,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              0,
+              0
+          ],
+          [
+              0,
+              0,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              0,
+              0
+          ],
+          [
+              0,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              0
+          ],
+          [
+              0,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              0
+          ],
+          [
+              0,
+              1,
+              1,
+              0,
+              0,
+              1,
+              1,
+              1,
+              0,
+              0,
+              1,
+              1,
+              0
+          ],
+          [
+              0,
+              1,
+              1,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              1,
+              1,
+              0
+          ],
+          [
+              1,
+              1,
+              1,
+              1,
+              0,
+              1,
+              1,
+              1,
+              0,
+              1,
+              1,
+              1,
+              1
+          ],
+          [
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              5,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1
+          ],
+          [
+              1,
+              1,
+              1,
+              0,
+              1,
+              0,
+              1,
+              0,
+              1,
+              0,
+              1,
+              1,
+              1
+          ],
+          [
+              0,
+              0,
+              0,
+              1,
+              1,
+              0,
+              1,
+              0,
+              1,
+              1,
+              0,
+              0,
+              0
+          ],
+          [
+              0,
+              0,
+              0,
+              0,
+              1,
+              1,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0
+          ],
+          [
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+          ]
+      ]
+  }
+];
