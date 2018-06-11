@@ -25,8 +25,8 @@ function collision (objet1, objet2) {
 
     //On prend comme modele l'objet le plus petit
 
-    Objet testobjet1 = new Objet();
-    Objet testobjet2 = new Objet();
+    var testobjet1;
+    var testobjet2;
 
     if (objet1.matrix.length > objet2.matrix.length) {
       testobjet1 = objet1;
@@ -36,25 +36,31 @@ function collision (objet1, objet2) {
       testobjet2 = objet1;
     }
 
-    for (int i = 0; i < testobjet1.hauteur; i++) {  // Tous les pixels en Y
-      for (int j = 0; j < testobjet1.largeur; j++) {  //Tous les pixels en X
+    for (var i = 0; i < testobjet1.matrix; i++) {  // Tous les pixels en Y
+      for (var j = 0; j < testobjet1.matrix[i]; j++) {  //Tous les pixels en X
 
         if (testobjet1.matrix[i][j] == 1) { //Si le pixel est actif
 
           //Calcul des coordonnees du pixel de testobjet1
 
-          int pixelX1 = (int)testobjet1.coordX + j;
-          int pixelY1 = (int)testobjet1.coordY + i;
+          var pixelX1min = testobjet1.coordX;
+          var pixelX1max = testobjet1.coordX + j;
+          var pixelY1min = testobjet1.coordY;
+          var pixelY1max = testobjet1.coordY + i;
 
           //Comparaison a tous les pixels de testobjet2
 
-          for (int k = 0; k < testobjet2.hauteur; k++) {
-            for (int l = 0; l < testobjet2.largeur; l++) {
+          for (var k = 0; k < testobjet2.matrix; k++) {
+            for (var l = 0; l < testobjet2.matrix[k]; l++) {
 
               if (testobjet2.matrix[k][l] == 1) {  //Si le pixel est actif
 
-                int pixelX2 = (int)testobjet2.coordX + l;
-                int pixelY2 = (int)testobjet2.coordY + k;
+                var pixelX2min = testobjet2.coordX;
+                var pixelX2max = testobjet2.coordX + j;
+                var pixelY2min = testobjet2.coordY;
+                var pixelY2max = testobjet2.coordY + i;
+
+                if(pixelX1min )
 
                 if (pixelX1 == pixelX2 && pixelY1 == pixelY2) {
 

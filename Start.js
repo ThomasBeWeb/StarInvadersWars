@@ -66,8 +66,6 @@ function draw() {
               screenElements.push(bigBoss);
             }
 
-            console.log(screenElements);
-
     }else{  //Level en cours
 
         //Fond
@@ -111,7 +109,10 @@ function draw() {
                         }
                         alienHeart.showObject();
                     }
-                  }
+                }
+
+                //UPDATE
+                updateScreen();
                 break;
 
     

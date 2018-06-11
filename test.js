@@ -1,4 +1,4 @@
-var essai = new Objet("Heart");
+var essai = loto(50);
 
 
 console.log(essai);

@@ -71,6 +71,7 @@ function ColorMe(code) {
   return codeRGB;
 }
 
+//AFFICHAGE TEXTE
 function textMe(texte, font, size, coordY) {
   textAlign(CENTER);
   textSize(size);
@@ -79,6 +80,7 @@ function textMe(texte, font, size, coordY) {
   text(texte, 700, parseInt(coordY));
 }
 
+//TEXTES INTRO
 function textIntro() {
 
   textMe("Projet UE NFA031  -  Cantinelli Thomas", fontSmall, 20, 25);
@@ -97,6 +99,7 @@ function textIntro() {
   textMe("To move: Mouse Left/Right  To shoot: Left Button", fontMedium, 30, 750);
 }
 
+//KEYPRESSED
 function keyPressed() {
 
   if(level === 0){
@@ -128,3 +131,30 @@ function keyPressed() {
   }
   
 }
+
+//RANDOM
+function loto (value) {
+  resultat = false;
+  if (value > (Math.random()*100)) resultat = true;
+  return resultat;
+}
+
+////TIR VAISSEAU (Un seul tir possible a la fois)
+function mousePressed() {
+
+  if (starShip.shot == 1 && level > 0 && level < 5) {
+
+    starShip.shot = 0; //Le tir n'est plus possible
+  
+    ///Creation du tir
+    // fire.play();
+    // fire.rewind();
+    shotShip = new Objet("ShotShip");
+    shotShip.coordX = starShip.coordX + (starShip.largeur / 2);  // Le tir part du milieu du vaisseau
+    shotShip.coordY = starShip.coordY;  // Le tir part du haut du vaisseau
+    screenElements.push(shotShip);
+
+  }
+  return false;
+}
+
