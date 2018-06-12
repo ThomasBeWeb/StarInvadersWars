@@ -19,9 +19,10 @@ function collision (objet1, objet2) {
     || (objet1.coordY + objet1.hauteur <= objet2.coordY))    // trop en haut
 
   {
-    result = false;
-    
+
   }else{  //On compare pixel par pixel
+
+    result = false;
 
     var listePixels1 = [];
     var listePixels2 = [];
@@ -84,11 +85,11 @@ function collision (objet1, objet2) {
     }
     
     //Comparaison pixel à pixel
-    for (var k = 0; k < testobjet2.length ; k++) { //Pour chaque pixel de objet 2
+    for (var k = 0; k < testobjet1.length ; k++) { //Pour chaque pixel de objet 2
 
       for (var l = 0; l < testobjet2.length; l++) { //Comparaison à chaque pixel de objet 1
 
-        if ((testobjet2[k][0] === testobjet1[l][0]) && (testobjet2[k][1] === testobjet1[l][1])) {  //Si la position des pixels est =
+        if ((testobjet1[k][0] === testobjet2[l][0]) && (testobjet1[k][1] === testobjet2[l][1])) {  //Si la position des pixels est =
 
             result = true;
             break;
