@@ -1,4 +1,4 @@
-var essai = loto(50);
+var essai = new Objet('Alien');
 
 
-console.log(essai);
+console.log(essai.matrix.length);

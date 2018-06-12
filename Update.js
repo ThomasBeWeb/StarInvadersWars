@@ -1,17 +1,14 @@
 function updateScreen() {
 
+    //TESTS COLLISIONS
     screenElements.forEach(function(element) {
 
         if (element.lives > 0) {
     
             switch (element.type) {
-      
+        
             case "Ship":
 
-                //MAJ
-                element.coordX = mouseX - 32.5;  //La position de la souris
-              
-                //Test Collision
                 screenElements.forEach(function(testAlien) {  //Test collision avec Aliens
 
                     if ((testAlien.type == "Alien" || testAlien.type == "BigBoss") && testAlien.lives > 0) {
@@ -23,22 +20,9 @@ function updateScreen() {
                     }
                 })
                 break;
-      
-            case "Alien":
-
-                //MAJ
-                element.coordY += element.vitesse;  //le Y est incremente de la vitesse definie par le level
-
-                //Decompte aleatoire du compteur de tir, pour creer un decalage des tirs entre les aliens
-                if (loto (50)) element.shot -= 1;
-                break;
-      
+        
             case "ShotShip":
 
-                //MAJ
-                element.coordY = element.coordY + (element.direction * element.vitesse);
-                
-                //Test Collision
                 if (element.coordY <= 0) { //Si Le tir est arrive en haut, il est supprime
                     element.lives -= 1;
                     starShip.shot = 1; //Le vaisseau est de nouveau autorise a tirer
@@ -94,10 +78,6 @@ function updateScreen() {
 
             case "ShotAlien":
 
-                //MAJ
-                element.coordY = element.coordY + (element.direction * element.vitesse); //L'ancienne coordonne en Y est additionne a la vitesse * 1 ou -1 pour diriger le tir vers le bas ou haut
-              
-                //Test Collision
                 if (element.coordY >= 800) { //Si Le tir est arrive en bas, il est supprime
                     element.lives -= 1;
 
@@ -111,10 +91,46 @@ function updateScreen() {
                     }
                 }
                 break;
-      
+        
             case "BigBoss":
 
                 //MAJ
+                trajectoireBB(bigBoss.vitesse);
+                element.shot -= 1;  //compteur shot decroit de 1
+                break;
+        
+            default:
+                break;
+            }
+        }
+    })
+
+    //MAJ POSITIONS
+    screenElements.forEach(function(element) {
+
+        if (element.lives > 0) {
+    
+            switch (element.type) {
+      
+            case "Ship":
+                element.coordX = mouseX - 32.5;  //La position de la souris
+                break;
+      
+            case "Alien":
+                element.coordY += element.vitesse;  //le Y est incremente de la vitesse definie par le level
+                //Decompte aleatoire du compteur de tir, pour creer un decalage des tirs entre les aliens
+                if (loto (50)) element.shot -= 1;
+                break;
+      
+            case "ShotShip":
+                element.coordY = element.coordY + (element.direction * element.vitesse);
+                break;
+
+            case "ShotAlien":
+                element.coordY = element.coordY + (element.direction * element.vitesse); //L'ancienne coordonne en Y est additionne a la vitesse * 1 ou -1 pour diriger le tir vers le bas ou haut
+                break;
+      
+            case "BigBoss":
                 trajectoireBB(bigBoss.vitesse);
                 element.shot -= 1;  //compteur shot decroit de 1
                 break;
@@ -123,8 +139,8 @@ function updateScreen() {
                 break;
             }
         }
-
     })
+
 
     // TIR DES ALIENS ET BIG BOSS
 

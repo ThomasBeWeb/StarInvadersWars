@@ -34,8 +34,8 @@ function collision (objet1, objet2) {
 
         if (objet1.matrix[i][j] == 1) { //Si le point est actif
 
-          var posYStart = objet1.coordY + i*5;
-          var posXStart = objet1.coordX + j*5;
+          var posYStart = parseInt(objet1.coordY + i*5);
+          var posXStart = parseInt(objet1.coordX + j*5);
 
           for(var t = 0 ; t < 5 ; t++){ //Creation coord pixel sous forme (coordX,coordY)
               
@@ -58,8 +58,8 @@ function collision (objet1, objet2) {
 
         if (objet2.matrix[i][j] == 1) { //Si le point est actif
 
-          var posYStart = objet2.coordY + i*5;
-          var posXStart = objet2.coordX + j*5;
+          var posYStart = parseInt(objet2.coordY + i*5);
+          var posXStart = parseInt(objet2.coordX + j*5);
 
           for(var t = 0 ; t < 5 ; t++){ //Creation coord pixel sous forme (coordX,coordY)
               
