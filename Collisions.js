@@ -21,57 +21,82 @@ function collision (objet1, objet2) {
   {
     result = false;
     
-  } else {  //On compare pixel par pixel
+  }else{  //On compare pixel par pixel
 
-    //On prend comme modele l'objet le plus petit
+    var listePixels1 = [];
+    var listePixels2 = [];
 
-    var testobjet1;
-    var testobjet2;
+    //ListePixels 1
+    for (var i = 0; i < objet1.matrix.length; i++) {  // Tous les pixels en Y
 
-    if (objet1.matrix.length > objet2.matrix.length) {
-      testobjet1 = objet1;
-      testobjet2 = objet2;
-    } else {
-      testobjet1 = objet2;
-      testobjet2 = objet1;
-    }
+      for (var j = 0; j < objet1.matrix[i].length; j++) {  //Chaque valeur de X
 
-    for (var i = 0; i < testobjet1.matrix; i++) {  // Tous les pixels en Y
-      for (var j = 0; j < testobjet1.matrix[i]; j++) {  //Tous les pixels en X
+        if (objet1.matrix[i][j] == 1) { //Si le point est actif
 
-        if (testobjet1.matrix[i][j] == 1) { //Si le pixel est actif
+          var posYStart = objet1.coordY + i*5;
+          var posXStart = objet1.coordX + j*5;
 
-          //Calcul des coordonnees du pixel de testobjet1
+          for(var t = 0 ; t < 5 ; t++){ //Creation coord pixel sous forme (coordX,coordY)
+              
+            var posY = parseInt(posYStart + t);
 
-          var pixelX1min = testobjet1.coordX;
-          var pixelX1max = testobjet1.coordX + j;
-          var pixelY1min = testobjet1.coordY;
-          var pixelY1max = testobjet1.coordY + i;
-
-          //Comparaison a tous les pixels de testobjet2
-
-          for (var k = 0; k < testobjet2.matrix; k++) {
-            for (var l = 0; l < testobjet2.matrix[k]; l++) {
-
-              if (testobjet2.matrix[k][l] == 1) {  //Si le pixel est actif
-
-                var pixelX2min = testobjet2.coordX;
-                var pixelX2max = testobjet2.coordX + j;
-                var pixelY2min = testobjet2.coordY;
-                var pixelY2max = testobjet2.coordY + i;
-
-                if(pixelX1min )
-
-                if (pixelX1 == pixelX2 && pixelY1 == pixelY2) {
-
-                  result = true;
-                }
-              }
+            for(var m = 0 ; m < 5 ; m++){
+              var posX = parseInt(posXStart + m);
+              var newPixel = [posX,posY];
+              listePixels1.push(newPixel);
             }
           }
         }
       }
     }
+
+    //ListePixels 2
+    for (var i = 0; i < objet2.matrix.length; i++) {  // Tous les pixels en Y
+
+      for (var j = 0; j < objet2.matrix[i].length; j++) {  //Chaque valeur de X
+
+        if (objet2.matrix[i][j] == 1) { //Si le point est actif
+
+          var posYStart = objet2.coordY + i*5;
+          var posXStart = objet2.coordX + j*5;
+
+          for(var t = 0 ; t < 5 ; t++){ //Creation coord pixel sous forme (coordX,coordY)
+              
+            posY = parseInt(posYStart + t);
+
+            for(var m = 0 ; m < 5 ; m++){
+              posX = parseInt(posX + m);
+              var newPixel = [posX,posY];
+              listePixels2.push(newPixel);
+            }
+          }
+        }
+      }
+    }
+  
+    //Verification du plus petit objet
+    if (listePixels1.length > listePixels2.length) {
+      testobjet1 = listePixels1;
+      testobjet2 = listePixels2;
+    } else {
+      testobjet1 = listePixels2;
+      testobjet2 = listePixels1;
+    }
+    
+    //Comparaison pixel à pixel
+    for (var k = 0; k < testobjet2.length ; k++) { //Pour chaque pixel de objet 2
+
+      for (var l = 0; l < testobjet2.length; l++) { //Comparaison à chaque pixel de objet 1
+
+        if ((testobjet2[k][0] === testobjet1[l][0]) && (testobjet2[k][1] === testobjet1[l][1])) {  //Si la position des pixels est =
+
+            result = true;
+            break;
+        }
+      }
+    }
   }
+
   return result;
 }
+
