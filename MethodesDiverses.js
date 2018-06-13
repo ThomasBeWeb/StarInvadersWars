@@ -102,6 +102,7 @@ function textIntro() {
 //KEYPRESSED
 function keyPressed() {
 
+  //CHOIX LEVEL
   if(level === 0){
 
     changeLevel = true;
@@ -125,9 +126,20 @@ function keyPressed() {
     }
   }
 
+  //NEXT LEVEL
+  if (pause && (keyCode == 78)) { //Ecran intermediaire entre chaque level
+    changeLevel = true;
+    pause = false;
+    loop();
+  }
+
   if(keyCode === 81){  //q
     changeLevel = true;
     level = 0;
+  }
+
+  if(keyCode === 80){  //p
+    noLoop();
   }
   
 }

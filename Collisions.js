@@ -39,10 +39,10 @@ function collision (objet1, objet2) {
 
           for(var t = 0 ; t < 5 ; t++){ //Creation coord pixel sous forme (coordX,coordY)
               
-            var posY = parseInt(posYStart + t);
+            var posY = posYStart + t;
 
             for(var m = 0 ; m < 5 ; m++){
-              var posX = parseInt(posXStart + m);
+              var posX = posXStart + m;
               var newPixel = [posX,posY];
               listePixels1.push(newPixel);
             }
@@ -63,10 +63,10 @@ function collision (objet1, objet2) {
 
           for(var t = 0 ; t < 5 ; t++){ //Creation coord pixel sous forme (coordX,coordY)
               
-            posY = parseInt(posYStart + t);
+            posY = posYStart + t;
 
             for(var m = 0 ; m < 5 ; m++){
-              posX = parseInt(posX + m);
+              posX = posXStart + m;
               var newPixel = [posX,posY];
               listePixels2.push(newPixel);
             }
@@ -83,6 +83,9 @@ function collision (objet1, objet2) {
       testobjet1 = listePixels2;
       testobjet2 = listePixels1;
     }
+
+    console.log(testobjet1);
+    console.log(testobjet2);
     
     //Comparaison pixel à pixel
     for (var k = 0; k < testobjet1.length ; k++) { //Pour chaque pixel de objet 2

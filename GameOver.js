@@ -1,4 +1,4 @@
-void levelOver() {  //Level reussi //<>//
+function levelOver() {  //Level reussi //<>//
 
   background(255);
 
@@ -22,7 +22,7 @@ void levelOver() {  //Level reussi //<>//
   textMe(message2, fontMedium, 500);
 }
 
-void gameOver() {  //Jeu perdu
+function gameOver() {  //Jeu perdu
   
   background(0);
 

@@ -5,6 +5,8 @@ var vitesse, probaShot;
 
 var starShip;
 
+var previousLevel;
+
 //Liste des objets en vie
 var screenElements = [];
 
@@ -121,6 +123,35 @@ function draw() {
         }
     }
 
+    ///SCORE
+
+    if (decompteScore > 0) {  //Score minimum bloque a 0
+        decompteScore--;  //Mise a jour du decompte score
+    }
+
+    ///FIN LEVEL
+
+    if (starShip.lives <= 0) {
+        gameOver();
+        //outro.play();
+        noLoop();  //Loop declenche par methode keyPressed() (MethodesDiverses)
+    }
+
+  if (nbAliens == 0 || (level == 4 && bigBoss.lives == 0)) {
+    levelOver();
+    pause = true;
+    noLoop();  //Loop declenche par methode keyPressed() (MethodesDiverses)
+    level += 1;
+  }
+}
+break;
+case 5:
+showRanking();
+noLoop();  //Loop declenche par methode keyPressed() (MethodesDiverses)
+break;
+
+default:
+break;
 
 
 
